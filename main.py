@@ -40,3 +40,90 @@ plt.ylabel("Number of Titles")
 plt.savefig("graphs/netflix_content_over_time.png")
 plt.show()
 plt.close()
+
+
+# 3rd graph, most common genres.
+
+# count the most common genres
+genres = df["listed_in"].dropna().str.split(",").explode().str.strip()
+
+top_genres = genres.value_counts().head(10)
+
+# third graph building
+top_genres.sort_values().plot(kind="barh", color="purple")
+
+plt.title("Top 10 Netflix Genres")
+plt.xlabel("Number of Titles")
+plt.ylabel("Genre")
+
+plt.tight_layout()
+plt.savefig("graphs/top_10_genres.png")
+plt.show()
+plt.close()
+
+
+# 4th graph, movie duration distribution
+
+# filter only movies
+movie_df = df[df["type"] == "Movie"].copy()
+
+# convert duration into numbers
+movie_df["duration_minutes"] = pd.to_numeric(
+    movie_df["duration"].str.replace(" min", "", regex=False),
+    errors="coerce"
+)
+
+# remove missing durations
+movie_df = movie_df.dropna(subset=["duration_minutes"])
+
+movie_df["duration_minutes"].plot(
+    kind="hist",
+    bins=30,
+    color="orange",
+    edgecolor="black"
+)
+
+plt.title("Distribution of Netflix Movie Durations")
+plt.xlabel("Duration (Minutes)")
+plt.ylabel("Number of Movies")
+
+plt.tight_layout()
+plt.savefig("graphs/movie_duration_distribution.png")
+plt.show()
+plt.close()
+
+
+# 5th graph most featured actors
+# count actor appearances
+actors = df["cast"].dropna().str.split(",").explode().str.strip()
+
+top_actors = actors.value_counts().head(10)
+
+top_actors.sort_values().plot(kind="barh", color="green")
+
+plt.title("Top 10 Most Featured Netflix Actors")
+plt.xlabel("Number of Titles")
+plt.ylabel("Actor")
+
+plt.tight_layout()
+plt.savefig("graphs/top_10_actors.png")
+plt.show()
+plt.close()
+
+
+# 6th graph, average movie duration by year
+# count actor appearances
+actors = df["cast"].dropna().str.split(",").explode().str.strip()
+
+top_actors = actors.value_counts().head(10)
+
+top_actors.sort_values().plot(kind="barh", color="green")
+
+plt.title("Top 10 Most Featured Netflix Actors")
+plt.xlabel("Number of Titles")
+plt.ylabel("Actor")
+
+plt.tight_layout()
+plt.savefig("graphs/top_10_actors.png")
+plt.show()
+plt.close()
