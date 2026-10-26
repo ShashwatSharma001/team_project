@@ -79,7 +79,7 @@ plt.show()
 plt.close()
 
 
-# 6th graph, average movie duration by year
+# 5th graph, average movie duration by year
 # count actor appearances
 actors = df["cast"].dropna().str.split(",").explode().str.strip()
 
