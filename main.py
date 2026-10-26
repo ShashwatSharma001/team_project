@@ -78,20 +78,34 @@ plt.savefig("graphs/top_10_actors.png")
 plt.show()
 plt.close()
 
-
 # 5th graph, average movie duration by year
-# count actor appearances
-actors = df["cast"].dropna().str.split(",").explode().str.strip()
 
-top_actors = actors.value_counts().head(10)
+# select movies only
+movie_df = df[df["type"] == "Movie"].copy()
 
-top_actors.sort_values().plot(kind="barh", color="green")
+# convert duration strings into numbers
+movie_df["duration_minutes"] = pd.to_numeric(
+    movie_df["duration"].str.replace(" min", "", regex=False),
+    errors="coerce"
+)
 
-plt.title("Top 10 Most Featured Netflix Actors")
-plt.xlabel("Number of Titles")
-plt.ylabel("Actor")
+# remove missing durations
+movie_df = movie_df.dropna(subset=["duration_minutes"])
 
+# calculate average duration for each year
+average_duration = movie_df.groupby("release_year")[
+    "duration_minutes"
+].mean()
+
+# create graph
+average_duration.plot(kind="line", marker="o", color="red")
+
+plt.title("Average Movie Duration by Release Year")
+plt.xlabel("Release Year")
+plt.ylabel("Average Duration (Minutes)")
+
+plt.grid(True)
 plt.tight_layout()
-plt.savefig("graphs/top_10_actors.png")
+plt.savefig("graphs/average_movie_duration.png")
 plt.show()
 plt.close()
