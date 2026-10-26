@@ -49,7 +49,7 @@ genres = df["listed_in"].dropna().str.split(",").explode().str.strip()
 
 top_genres = genres.value_counts().head(10)
 
-# third graph building
+# 3rd graph building
 top_genres.sort_values().plot(kind="barh", color="purple")
 
 plt.title("Top 10 Netflix Genres")
@@ -61,39 +61,7 @@ plt.savefig("graphs/top_10_genres.png")
 plt.show()
 plt.close()
 
-
-# 4th graph, movie duration distribution
-
-# filter only movies
-movie_df = df[df["type"] == "Movie"].copy()
-
-# convert duration into numbers
-movie_df["duration_minutes"] = pd.to_numeric(
-    movie_df["duration"].str.replace(" min", "", regex=False),
-    errors="coerce"
-)
-
-# remove missing durations
-movie_df = movie_df.dropna(subset=["duration_minutes"])
-
-movie_df["duration_minutes"].plot(
-    kind="hist",
-    bins=30,
-    color="orange",
-    edgecolor="black"
-)
-
-plt.title("Distribution of Netflix Movie Durations")
-plt.xlabel("Duration (Minutes)")
-plt.ylabel("Number of Movies")
-
-plt.tight_layout()
-plt.savefig("graphs/movie_duration_distribution.png")
-plt.show()
-plt.close()
-
-
-# 5th graph most featured actors
+# 4th graph most featured actors
 # count actor appearances
 actors = df["cast"].dropna().str.split(",").explode().str.strip()
 
